@@ -11,7 +11,7 @@
       if (navigator.serviceWorker) {
         navigator.serviceWorker
           .register("/serviceworker.js")
-          .then(registration => console.log("sucess!", registration))
+          .then(registration => console.log("sucess!", registration.scope))
           .catch(error => console.log("failed!", error));
 
         console.log("all done!");
