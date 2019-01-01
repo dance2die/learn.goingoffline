@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>service worker demo</title>
+    <link rel="serviceworker" href="/serviceworker.js">
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="/public.e31bb0bc.js"></script>
+    <script>if (navigator.serviceWorker) {
+  navigator.serviceWorker.register("/serviceworker.js").then(function (registration) {
+    return console.log("sucess!", registration);
+  }).catch(function (error) {
+    return console.log("failed!", error);
+  });
+  console.log("all done!");
+}</script>
+  </body>
+</html>
