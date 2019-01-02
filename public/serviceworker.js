@@ -1,4 +1,4 @@
-const version = "0.0.12";
+const version = "0.0.15";
 const staticCacheName = `staticfiles${version}`;
 
 // Clean up caches here!
@@ -33,20 +33,6 @@ addEventListener("install", function(event) {
       return staticCache.addAll([`/img/linkedin.png`, `/offline.html`]);
     })
   );
-
-  //   event.waitUntil(
-  //     caches.open(staticCacheName).then(staticCache => {
-  //       // nice to have
-  //       staticCache.addAll([]);
-
-  //       // must have
-  //       return staticCache.addAll([
-  //         `/index.js`,
-  //         `/img/linkedin.png`,
-  //         `/offline.html`
-  //       ]);
-  //     })
-  //   );
 });
 
 addEventListener("fetch", fetchEvent => {
@@ -55,7 +41,11 @@ addEventListener("fetch", fetchEvent => {
   console.log(`request`, request);
 
   fetchEvent.respondWith(
-    caches.match(request).then(cache => caches.match(`/offline.html`))
-    //   cache || fetch(request).catch(error => caches.match(`/offline.html`)))
+    caches
+      .match(request)
+      .then(
+        cache =>
+          cache || fetch(request).catch(error => caches.match(`/offline.html`))
+      )
   );
 });
