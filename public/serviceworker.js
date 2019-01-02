@@ -1,4 +1,4 @@
-const version = "0.0.1";
+const version = "0.0.3";
 const staticCacheName = `staticfiles${version}`;
 
 addEventListener("install", function(event) {
@@ -10,7 +10,7 @@ addEventListener("install", function(event) {
       staticCache.addAll([]);
 
       // must have
-      return staticCache.addAll([]);
+      return staticCache.addAll(["/index.js"]);
     })
   );
 });
