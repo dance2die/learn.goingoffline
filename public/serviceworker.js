@@ -1,23 +1,27 @@
+const version = "0.0.1";
+const staticCacheName = `staticfiles${version}`;
+
 addEventListener("install", function(event) {
   console.log(`The service worker is INSTALLing`);
+  skipWaiting();
+  event.waitUntil(
+    caches.open(staticCacheName).then(staticCache => {
+      // nice to have
+      staticCache.addAll([]);
+
+      // must have
+      return staticCache.addAll([]);
+    })
+  );
 });
+
 addEventListener("activate", function(event) {
   console.log(`The service worker is ACTIVATing`);
 });
+
 addEventListener("fetch", fetchEvent => {
   const { request } = fetchEvent;
   fetchEvent.respondWith(
-    fetch(request)
-      .then(response => response)
-      .catch(
-        error =>
-          new Response(
-            `<h1>Oop!</h1> <div>something went wrong!</div> <div>${error}</div>`,
-            {
-              headers: { "Content-type": "text/html;charset=utf-8" }
-            }
-          )
-      )
+    caches.match(request).then(cache => cache || fetch(request))
   );
-  //   console.log(fetchEvent.request);
 });
