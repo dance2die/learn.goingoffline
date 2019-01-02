@@ -1,6 +1,26 @@
-const version = "0.0.3";
+const version = "0.0.4";
 const staticCacheName = `staticfiles${version}`;
 
+// Clean up caches here!
+addEventListener("activate", function(event) {
+  console.log(`The service worker is ACTIVATing`);
+  event.waitUntil(
+    caches
+      .keys()
+      .then(cacheNames => {
+        return Promise.all(
+          cacheNames.map(cacheName => {
+            if (cacheName !== staticCacheName) {
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+      .then(() => clients.claim())
+  );
+});
+
+// Install caches here!
 addEventListener("install", function(event) {
   console.log(`The service worker is INSTALLing`);
   skipWaiting();
@@ -13,10 +33,6 @@ addEventListener("install", function(event) {
       return staticCache.addAll(["/index.js"]);
     })
   );
-});
-
-addEventListener("activate", function(event) {
-  console.log(`The service worker is ACTIVATing`);
 });
 
 addEventListener("fetch", fetchEvent => {
